@@ -81,17 +81,18 @@ export default {
   mounted() {
     const doc = wwLib.getFrontDocument();
     const isScript = !!doc.querySelector("[data-name='calendly-script']");
-    if (isScript) return;
 
-    const script = document.createElement("script");
-    script.setAttribute("data-name", "calendly-script");
-    script.setAttribute("type", "text/javascript");
-    script.setAttribute(
-      "src",
-      "https://assets.calendly.com/assets/external/widget.js"
-    );
-    script.setAttribute("async", true);
-    doc.body.appendChild(script);
+    if (!isScript) {
+      const script = document.createElement("script");
+      script.setAttribute("data-name", "calendly-script");
+      script.setAttribute("type", "text/javascript");
+      script.setAttribute(
+        "src",
+        "https://assets.calendly.com/assets/external/widget.js"
+      );
+      script.setAttribute("async", true);
+      doc.body.appendChild(script);
+    }
 
     window.addEventListener("message", (e) => this.eventHandlers(e));
   },
