@@ -1,4 +1,4 @@
-# Element component starter
+# Embed Calendly element
 
 This is an element for [weweb.io](https://www.weweb.io/).
 
@@ -12,4 +12,4 @@ To serve locally, run `npm run serve --port=[PORT]`, and then go to Weweb editor
 
 ## Build
 
-Before release, you can check build error by running `npm run build --name=my-element`
+Before release, you can check build error by running `npm run build --name=ww-calendly-embed`
