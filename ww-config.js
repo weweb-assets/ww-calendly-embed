@@ -37,7 +37,7 @@ export default {
       },
       type: "Text",
       options: {
-        placeholder: "Rick sanchez",
+        placeholder: "Jane Doe",
       },
       section: "settings",
     },
@@ -49,7 +49,7 @@ export default {
       },
       type: "Text",
       options: {
-        placeholder: "rick@sanchez.pickle",
+        placeholder: "jane@doe.com",
       },
       section: "settings",
     },
