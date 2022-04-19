@@ -19,6 +19,7 @@ export default {
         placeholder: "https://calendly.com/ricksanchez/30min",
       },
       section: "settings",
+      defaultValue: "",
     },
     prefillOptions: {
       type: "OnOff",

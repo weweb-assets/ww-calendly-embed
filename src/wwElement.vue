@@ -25,10 +25,13 @@ export default {
       deep: true,
       handler() {
         if (window.__WW_IS_PRERENDER__) return;
+        if (!this.isUrlValid) return;
 
-        if (window.Calendly) {
+        if (wwLib.getFrontWindow().Calendly) {
           this.componentKey += 1;
-          this.$nextTick(() => window.Calendly.initInlineWidget(this.settings));
+          this.$nextTick(() =>
+            wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings)
+          );
         }
       },
     },
@@ -55,6 +58,13 @@ export default {
       };
 
       return this.content.prefillOptions ? { ...settings, prefill } : settings;
+    },
+    isUrlValid() {
+      const expression =
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
+      const regex = new RegExp(expression);
+
+      return this.content.url.match(regex);
     },
   },
   methods: {
@@ -88,7 +98,7 @@ export default {
     const isScript = !!script;
 
     if (!isScript) {
-      script = document.createElement("script");
+      script = doc.createElement("script");
       script.setAttribute("data-name", "calendly-script");
       script.setAttribute("type", "text/javascript");
       script.setAttribute(
@@ -100,7 +110,10 @@ export default {
     }
 
     script.addEventListener("load", () => {
-      this.$nextTick(() => window.Calendly.initInlineWidget(this.settings));
+      if (!this.isUrlValid) return;
+      this.$nextTick(() =>
+        wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings)
+      );
     });
 
     window.addEventListener("message", (e) => this.eventHandlers(e));
