@@ -43,7 +43,7 @@ export default {
     },
     settings() {
       const settings = {
-        url: `https://calendly.com/${this.content.id}?hide_landing_page_details=1&hide_gdpr_banner=1`,
+        url: `${this.content.url}?hide_landing_page_details=1&hide_gdpr_banner=1`,
         parentElement: this.$el,
       };
 
@@ -79,11 +79,13 @@ export default {
     },
   },
   mounted() {
+    if (window.__WW_IS_PRERENDER__) return;
+
     const doc = wwLib.getFrontDocument();
     const isScript = !!doc.querySelector("[data-name='calendly-script']");
 
     if (!isScript) {
-      const script = document.createElement("script");
+      const script = doc.createElement("script");
       script.setAttribute("data-name", "calendly-script");
       script.setAttribute("type", "text/javascript");
       script.setAttribute(

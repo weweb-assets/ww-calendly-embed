@@ -9,14 +9,14 @@ export default {
     { name: "booked", label: { en: "Invitee successfully booked a meeting" } },
   ],
   properties: {
-    id: {
+    url: {
       bindable: true,
       label: {
-        en: "Calendly id",
+        en: "Calendly link",
       },
       type: "Text",
       options: {
-        placeholder: "ricksanchez",
+        placeholder: "https://calendly.com/ricksanchez/30min",
       },
       section: "settings",
     },
