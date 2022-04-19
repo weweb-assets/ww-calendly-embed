@@ -23,6 +23,7 @@ export default {
   watch: {
     content: {
       deep: true,
+      immediate: true,
       handler() {
         if (window.Calendly) {
           this.componentKey += 1;
