@@ -25,6 +25,8 @@ export default {
       deep: true,
       immediate: true,
       handler() {
+        if (window.__WW_IS_PRERENDER__) return;
+
         if (window.Calendly) {
           this.componentKey += 1;
           this.$nextTick(() => window.Calendly.initInlineWidget(this.settings));
