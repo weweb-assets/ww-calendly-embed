@@ -80,10 +80,11 @@ export default {
   },
   mounted() {
     const doc = wwLib.getFrontDocument();
-    const isScript = !!doc.querySelector("[data-name='calendly-script']");
+    let script = doc.querySelector("[data-name='calendly-script']");
+    const isScript = !!script;
 
     if (!isScript) {
-      const script = document.createElement("script");
+      script = document.createElement("script");
       script.setAttribute("data-name", "calendly-script");
       script.setAttribute("type", "text/javascript");
       script.setAttribute(
@@ -94,7 +95,9 @@ export default {
       doc.body.appendChild(script);
     }
 
-    this.$nextTick(() => window.Calendly.initInlineWidget(this.settings));
+    script.addEventListener("load", () => {
+      this.$nextTick(() => window.Calendly.initInlineWidget(this.settings));
+    });
 
     window.addEventListener("message", (e) => this.eventHandlers(e));
   },
