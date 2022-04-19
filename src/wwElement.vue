@@ -24,6 +24,8 @@ export default {
     content: {
       deep: true,
       handler() {
+        if (window.__WW_IS_PRERENDER__) return;
+
         if (window.Calendly) {
           this.componentKey += 1;
           this.$nextTick(() => window.Calendly.initInlineWidget(this.settings));
@@ -79,6 +81,8 @@ export default {
     },
   },
   mounted() {
+    if (window.__WW_IS_PRERENDER__) return;
+
     const doc = wwLib.getFrontDocument();
     let script = doc.querySelector("[data-name='calendly-script']");
     const isScript = !!script;
@@ -93,10 +97,12 @@ export default {
       );
       script.setAttribute("async", true);
       doc.body.appendChild(script);
+      console.log("created");
     }
 
     script.addEventListener("load", () => {
       this.$nextTick(() => window.Calendly.initInlineWidget(this.settings));
+      console.log("loaded");
     });
 
     window.addEventListener("message", (e) => this.eventHandlers(e));
