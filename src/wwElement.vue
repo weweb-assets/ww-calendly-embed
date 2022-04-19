@@ -97,12 +97,10 @@ export default {
       );
       script.setAttribute("async", true);
       doc.body.appendChild(script);
-      console.log("created");
     }
 
     script.addEventListener("load", () => {
       this.$nextTick(() => window.Calendly.initInlineWidget(this.settings));
-      console.log("loaded");
     });
 
     window.addEventListener("message", (e) => this.eventHandlers(e));
