@@ -1,12 +1,20 @@
 <template>
   <div
+    v-if="isUrlValid"
     class="ww-calendly-embed"
+    ref="calendlyElement"
     :class="{ editing: isEditing }"
-    :key="componentKey"
   ></div>
+  <div v-else class="placeholder">
+    <p class="message">
+      Please provide a Calendly URL in the settings of this element
+    </p>
+  </div>
 </template>
 
 <script>
+import { nextTick } from "vue";
+
 export default {
   props: {
     content: { type: Object, required: true },
@@ -15,23 +23,17 @@ export default {
     /* wwEditor:end */
   },
   emits: ["trigger-event"],
-  data() {
-    return {
-      componentKey: 0,
-    };
-  },
   watch: {
     content: {
       deep: true,
-      handler() {
+      async handler() {
         if (window.__WW_IS_PRERENDER__) return;
         if (!this.isUrlValid) return;
 
         if (wwLib.getFrontWindow().Calendly) {
-          this.componentKey += 1;
-          this.$nextTick(() =>
-            wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings)
-          );
+          await nextTick();
+          this.$refs.calendlyElement.replaceChildren();
+          wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings);
         }
       },
     },
@@ -49,7 +51,7 @@ export default {
     settings() {
       const settings = {
         url: `${this.content.url}?hide_landing_page_details=1&hide_gdpr_banner=1`,
-        parentElement: this.$el,
+        parentElement: this.$refs.calendlyElement,
       };
 
       const prefill = {
@@ -109,11 +111,11 @@ export default {
       doc.body.appendChild(script);
     }
 
-    script.addEventListener("load", () => {
+    script.addEventListener("load", async () => {
       if (!this.isUrlValid) return;
-      this.$nextTick(() =>
-        wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings)
-      );
+
+      await nextTick();
+      wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings);
     });
 
     window.addEventListener("message", (e) => this.eventHandlers(e));
@@ -128,6 +130,21 @@ export default {
 .ww-calendly-embed {
   &.editing {
     pointer-events: none;
+  }
+}
+.placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  .message {
+    padding: 2rem;
+    margin: 2rem;
+    border-radius: 1rem;
+    background-color: white;
   }
 }
 </style>
