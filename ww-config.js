@@ -16,7 +16,7 @@ export default {
       },
       type: "Text",
       options: {
-        placeholder: "https://calendly.com/ricksanchez/30min",
+        placeholder: "https://calendly.com/janedoe",
       },
       section: "settings",
       defaultValue: "",
