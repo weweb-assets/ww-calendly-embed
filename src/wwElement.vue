@@ -2,8 +2,8 @@
   <div
     v-if="isUrlValid"
     class="ww-calendly-embed"
+    ref="calendlyElement"
     :class="{ editing: isEditing }"
-    :key="componentKey"
   ></div>
   <div v-else class="placeholder">
     <p class="message">
@@ -23,11 +23,6 @@ export default {
     /* wwEditor:end */
   },
   emits: ["trigger-event"],
-  data() {
-    return {
-      componentKey: 0,
-    };
-  },
   watch: {
     content: {
       deep: true,
@@ -36,9 +31,8 @@ export default {
         if (!this.isUrlValid) return;
 
         if (wwLib.getFrontWindow().Calendly) {
-          this.componentKey += 1;
-
           await nextTick();
+          this.$refs.calendlyElement.replaceChildren();
           wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings);
         }
       },
@@ -57,7 +51,7 @@ export default {
     settings() {
       const settings = {
         url: `${this.content.url}?hide_landing_page_details=1&hide_gdpr_banner=1`,
-        parentElement: this.$el,
+        parentElement: this.$refs.calendlyElement,
       };
 
       const prefill = {
