@@ -91,6 +91,12 @@ export default {
         }
       }
     },
+    async initCalendly() {
+      if (!this.isUrlValid) return;
+
+      await nextTick();
+      wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings);
+    },
   },
   mounted() {
     if (window.__WW_IS_PRERENDER__) return;
@@ -109,14 +115,13 @@ export default {
       );
       script.setAttribute("async", true);
       doc.body.appendChild(script);
+
+      script.addEventListener("load", () => {
+        this.initCalendly();
+      });
+    } else {
+      this.initCalendly();
     }
-
-    script.addEventListener("load", async () => {
-      if (!this.isUrlValid) return;
-
-      await nextTick();
-      wwLib.getFrontWindow().Calendly.initInlineWidget(this.settings);
-    });
 
     window.addEventListener("message", (e) => this.eventHandlers(e));
   },
