@@ -5,8 +5,8 @@ export default {
     },
   },
   triggerEvents: [
-    { name: "dateAndTime", label: { en: "Invitee selected date and time" } },
-    { name: "booked", label: { en: "Invitee successfully booked a meeting" } },
+    { name: "dateAndTime", label: { en: "Invitee selected date and time" }, description: "Run when a user picks a date and time." },
+    { name: "booked", label: { en: "Invitee successfully booked a meeting" }, description: "Run when a meeting is successfully booked." },
   ],
   properties: {
     url: {
